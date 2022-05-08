@@ -1,0 +1,80 @@
+jkrbhjgbrhgehb https://eclass.uoa.gr grhjbgr dfjfjowr ewnfkj  https://www.di.uoa.gr mf wifw go https://www.youtube.com hgfrhyjugfrufyrwfrwhbgkjhjgkjbrhkgbrykbgrqyk wbdhbew https://eclass.uoa.gr gg54huuuuuuuuuuuuuuuikigrq  jutymjyuyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+rgjriuojfuor3pjf https://www.youtube.com  myuyuuyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+duhduiewhudhioweqhfiuohquifo https://www.di.uoa.gr fejlirjuif2juiogj8touv28opu8o5p1vymup https://eclass.uoa.gr j34tuj3tio32op,x9i12  jwruiohg hr3uioqj81o iurh4ui2o	tupy kogpkpkopkogk3ogpi3o ghjuio4tjigopo 35jgiog34jgo otjiopt3op5 i34tjpo4 https://www.youtube.com gtenuhoug2io ifewjoj	2iopguj https://www.di.uoa.gr i3tio035jjgtiopop https://www.di.uoa.gr  https://www.di.uoa.gr iuhruio38tiou38ptu83o
+https://eclass.uoa.gr https://www.di.uoa.gr https://eclass.uoa.gr ijr42opjtgiop43jiot4jpt j43fiop4 jgij5 ijr2po  https://www.di.uoa.gr/   https://www.youtube.com l5kjgiopg54ijghiop 3giog53pjiog53p iufrjuireh j4io5rjg  i4jgiop r  https://eclass.uoa.gr
+https://www.di.uoa.gr 4iojfgo43jg8iuj548guj548 ij4go5j4rgiop5r https://www.youtube.com https://www.di.uoa.gr uhg3iuhg5ui iohjg5iuog5j4ut4 jtiojt5r4 gio krjgiog5 https://www.di.uoa.gr
+
+
+							//Create new Workers && FIFOS (if needed).
+						for(int i=0;i< new_workers_needed ;i++){
+	    			    	if ( getpid() == manager_pid){
+	    						numworkers++;
+
+	
+						//Create FIFOs of new Workers.
+						string Pipename = to_string(workers.get_number_of_workers() + 1) + "_infifo";
+						int n = Pipename.length();
+        				char pipename[n + 1];
+        				strcpy(pipename , Pipename.c_str());
+						if ( mkfifo (pipename,0777) == -1){if(errno != EEXIST){ cout<<" Could not create" << pipename <<" .."<<endl; return -1 ;}}
+
+
+
+
+
+	    						//NEW FIFO 
+	    							//Create FIFOs of new Workers.
+						string Pipename = to_string(workers.get_number_of_workers() + 1) + "_infifo";
+						int n = Pipename.length();
+        				char pipename[n + 1];
+        				strcpy(pipename , Pipename.c_str());
+						if ( mkfifo (pipename,0777) == -1){if(errno != EEXIST){ cout<<" Could not create" << pipename <<" .."<<endl; return -1 ;}}
+
+
+
+
+	    						pid_t new_worker_pid = fork(); 
+	    						workers.AddWorker(pipename,new_worker_pid);
+	        					if(new_worker_pid == 0){
+	            				printf("[worker] pid %d from [manager] pid %d\n",getpid(),getppid());
+	            				//Worker body ...
+
+	            				//call WOrker body
+
+
+
+
+
+
+
+	           					//exit(0);
+	        					}else{ 
+
+	        				
+
+	        					}
+	        				}
+	    				}
+
+
+
+
+	    			if ( getpid() == manager_pid){
+	    			// Assign files to Workers...
+	    			for( int j = 0 ; j <= new_files;j++){
+						char* message = (char*)malloc( sizeof(Pipes.ListenerMessage) +1);
+	            		strcpy( message , Pipes.ListenerMessage);
+	        			char* filename = get_file_name(message,MonitorDir,j);
+	        			free( message );
+	        			cout<<"filename :: "<<filename<<endl;
+	        			//returns worker number.
+	        			workers.AssignToFirstAvailable( filename );
+	        			//Pass file  To Worker.
+	    			}
+	    			new_files = 0 ;
+	    			if ( numworkers >= 10 ){
+	    				break;
+	    			} 
+				} 
+
+	         }
